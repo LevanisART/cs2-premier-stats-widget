@@ -2,9 +2,9 @@
 
 OBS browser source widget that displays your CS2 Premier rating, stats, and recent match history. Data is fetched from the Leetify API.
 
-[![Widget Preview](https://i.ibb.co/YnT75YC/badge-preview-anubis.png)](https://levankotolashvili.github.io/cs2-premier-obs-widget/)
+[![Widget Preview](https://i.ibb.co/YnT75YC/badge-preview-anubis.png)](https://LevanisART.github.io/cs2-premier-stats-widget/)
 
-### [Open Customizer](https://levankotolashvili.github.io/cs2-premier-obs-widget/)
+### [Open Customizer](https://LevanisART.github.io/cs2-premier-stats-widget/)
 
 ## Features
 
