@@ -1,8 +1,8 @@
-import { fetchPremierData, type PremierData } from '../shared/api';
-import { configToParams } from '../shared/config';
-import { formatRating, getRankTier } from '../shared/ranks';
-import { DEFAULT_CONFIG, type WidgetConfig } from '../shared/types';
-import './customizer.css';
+import { fetchPremierData, type PremierData } from "../shared/api";
+import { configToParams } from "../shared/config";
+import { formatRating, getRankTier } from "../shared/ranks";
+import { DEFAULT_CONFIG, type WidgetConfig } from "../shared/types";
+import "./customizer.css";
 
 let currentConfig: WidgetConfig = { ...DEFAULT_CONFIG };
 let previewData: PremierData | null = null;
@@ -11,12 +11,13 @@ let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
 function getWidgetUrl(): string {
   const params = configToParams(currentConfig);
-  const base = window.location.origin + window.location.pathname.replace(/\/$/, '');
+  const base =
+    window.location.origin + window.location.pathname.replace(/\/$/, "");
   return `${base}/widget/?${params.toString()}`;
 }
 
 function renderPreview() {
-  const previewEl = document.getElementById('preview-widget')!;
+  const previewEl = document.getElementById("preview-widget")!;
 
   if (previewError) {
     previewEl.innerHTML = `
@@ -39,20 +40,20 @@ function renderPreview() {
   const tier = getRankTier(data.rating);
   const recent = data.recentGames.slice(0, config.matchCount);
 
-  let changeHtml = '';
+  let changeHtml = "";
   if (config.showChange) {
     const diff = data.ratingChange;
-    const cls = diff > 0 ? 'positive' : diff < 0 ? 'negative' : 'neutral';
-    const prefix = diff > 0 ? '+' : '';
+    const cls = diff > 0 ? "positive" : diff < 0 ? "negative" : "neutral";
+    const prefix = diff > 0 ? "+" : "";
     changeHtml = `<span class="wp-change ${cls}">(${prefix}${formatRating(diff)})</span>`;
   }
 
-  let statsHtml = '';
+  let statsHtml = "";
   if (config.showStats) {
     const totalKills = recent.reduce((s, g) => s + g.kills, 0);
     const totalDeaths = recent.reduce((s, g) => s + g.deaths, 0);
     const avgKills = totalKills / recent.length;
-    const kd = totalDeaths > 0 ? (totalKills / totalDeaths).toFixed(2) : '—';
+    const kd = totalDeaths > 0 ? (totalKills / totalDeaths).toFixed(2) : "—";
     statsHtml = `
       <div class="wp-stats">
         <div class="wp-stat"><span class="wp-stat-val">${avgKills.toFixed(1)}</span><span class="wp-stat-lbl">AVG</span></div>
@@ -61,24 +62,24 @@ function renderPreview() {
       </div>`;
   }
 
-  let historyHtml = '';
+  let historyHtml = "";
   if (config.showMatchHistory) {
     const letters = [...recent]
       .reverse()
       .map((g) => {
-        const w = g.matchResult === 'win';
-        return `<span class="${w ? 'w' : 'l'}">${w ? 'W' : 'L'}</span>`;
+        const w = g.matchResult === "win";
+        return `<span class="${w ? "w" : "l"}">${w ? "W" : "L"}</span>`;
       })
-      .join(' ');
+      .join(" ");
     historyHtml = `<div class="wp-history">${letters}</div>`;
   }
 
   previewEl.innerHTML = `
     <div class="wp rank-${tier.key}">
       <div class="wp-top">
-        ${config.showAvatar ? `<img class="wp-avatar" src="${data.avatarUrl}" alt="">` : ''}
+        ${config.showAvatar ? `<img class="wp-avatar" src="${data.avatarUrl}" alt="">` : ""}
         <div class="wp-identity">
-          ${config.showName ? `<div class="wp-name">${data.name}</div>` : ''}
+          ${config.showName ? `<div class="wp-name">${data.name}</div>` : ""}
           <div class="wp-rating-line">
             <span class="wp-rating">${formatRating(data.rating)}</span>
             ${changeHtml}
@@ -91,11 +92,11 @@ function renderPreview() {
 }
 
 function updateGeneratedUrl() {
-  const urlEl = document.getElementById('generated-url') as HTMLInputElement;
+  const urlEl = document.getElementById("generated-url") as HTMLInputElement;
   if (currentConfig.steamId) {
     urlEl.value = getWidgetUrl();
   } else {
-    urlEl.value = '';
+    urlEl.value = "";
   }
 }
 
@@ -111,7 +112,7 @@ async function loadPreview() {
     previewError = null;
     previewData = await fetchPremierData(currentConfig.steamId);
   } catch (e) {
-    previewError = e instanceof Error ? e.message : 'Failed to load';
+    previewError = e instanceof Error ? e.message : "Failed to load";
     previewData = null;
   }
   renderPreview();
@@ -124,25 +125,25 @@ function debouncedLoadPreview() {
 }
 
 function bindControls() {
-  const steamInput = document.getElementById('steam-id') as HTMLInputElement;
-  steamInput.addEventListener('input', () => {
+  const steamInput = document.getElementById("steam-id") as HTMLInputElement;
+  steamInput.addEventListener("input", () => {
     currentConfig.steamId = steamInput.value.trim();
     updateGeneratedUrl();
     debouncedLoadPreview();
   });
 
   const checkboxMap: Record<string, keyof WidgetConfig> = {
-    'show-avatar': 'showAvatar',
-    'show-name': 'showName',
-    'show-change': 'showChange',
-    'show-stats': 'showStats',
-    'show-history': 'showMatchHistory',
+    "show-avatar": "showAvatar",
+    "show-name": "showName",
+    "show-change": "showChange",
+    "show-stats": "showStats",
+    "show-history": "showMatchHistory",
   };
 
   for (const [id, key] of Object.entries(checkboxMap)) {
     const el = document.getElementById(id) as HTMLInputElement;
     el.checked = currentConfig[key] as boolean;
-    el.addEventListener('change', () => {
+    el.addEventListener("change", () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (currentConfig as any)[key] = el.checked;
       renderPreview();
@@ -150,43 +151,49 @@ function bindControls() {
     });
   }
 
-  const matchCountEl = document.getElementById('match-count') as HTMLSelectElement;
+  const matchCountEl = document.getElementById(
+    "match-count",
+  ) as HTMLSelectElement;
   matchCountEl.value = String(currentConfig.matchCount);
-  matchCountEl.addEventListener('change', () => {
+  matchCountEl.addEventListener("change", () => {
     currentConfig.matchCount = parseInt(matchCountEl.value, 10);
     renderPreview();
     updateGeneratedUrl();
   });
 
-  const refreshEl = document.getElementById('refresh-interval') as HTMLSelectElement;
+  const refreshEl = document.getElementById(
+    "refresh-interval",
+  ) as HTMLSelectElement;
   refreshEl.value = String(currentConfig.refreshInterval);
-  refreshEl.addEventListener('change', () => {
+  refreshEl.addEventListener("change", () => {
     currentConfig.refreshInterval = parseInt(refreshEl.value, 10);
     updateGeneratedUrl();
   });
 
-  const mapEl = document.getElementById('preview-map') as HTMLSelectElement;
-  mapEl.addEventListener('change', () => {
-    const previewArea = document.getElementById('preview-widget')!;
+  const mapEl = document.getElementById("preview-map") as HTMLSelectElement;
+  mapEl.addEventListener("change", () => {
+    const previewArea = document.getElementById("preview-widget")!;
     previewArea.style.backgroundImage = `url('https://leetify.com/assets/images/maps/${mapEl.value}.jpg')`;
   });
 
-  document.getElementById('copy-url')!.addEventListener('click', () => {
-    const urlEl = document.getElementById('generated-url') as HTMLInputElement;
+  document.getElementById("copy-url")!.addEventListener("click", () => {
+    const urlEl = document.getElementById("generated-url") as HTMLInputElement;
     if (urlEl.value) {
       navigator.clipboard.writeText(urlEl.value);
-      const btn = document.getElementById('copy-url')!;
-      btn.textContent = 'Copied!';
-      setTimeout(() => (btn.textContent = 'Copy'), 1500);
+      const btn = document.getElementById("copy-url")!;
+      btn.textContent = "Copied!";
+      setTimeout(() => (btn.textContent = "Copy"), 1500);
     }
   });
 
-  document.getElementById('reset-btn')!.addEventListener('click', () => {
+  document.getElementById("reset-btn")!.addEventListener("click", () => {
     const steamId = currentConfig.steamId;
     currentConfig = { ...DEFAULT_CONFIG, steamId };
 
     for (const [id, key] of Object.entries(checkboxMap)) {
-      (document.getElementById(id) as HTMLInputElement).checked = currentConfig[key] as boolean;
+      (document.getElementById(id) as HTMLInputElement).checked = currentConfig[
+        key
+      ] as boolean;
     }
     matchCountEl.value = String(currentConfig.matchCount);
     refreshEl.value = String(currentConfig.refreshInterval);
@@ -196,7 +203,7 @@ function bindControls() {
 }
 
 function init() {
-  const app = document.getElementById('app')!;
+  const app = document.getElementById("app")!;
   app.innerHTML = `
     <div class="customizer">
       <header class="header">
@@ -210,7 +217,7 @@ function init() {
 
           <div class="field">
             <label class="field-label" for="steam-id">Steam ID (Steam64)</label>
-            <input type="text" id="steam-id" class="input" placeholder="e.g. 76561198258079324">
+            <input type="text" id="steam-id" class="input" placeholder="e.g. 76561198012345678">
             <span class="field-hint">Find your Steam64 ID at steamid.io</span>
           </div>
 
