@@ -129,6 +129,7 @@ body {
 
 .history .w { color: #4ade80; }
 .history .l { color: #f87171; }
+.history .t { color: #facc15; }
 
 /* Loading */
 .widget.loading { opacity: 0.6; }

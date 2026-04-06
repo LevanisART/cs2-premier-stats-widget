@@ -67,8 +67,9 @@ function renderPreview() {
     const letters = [...recent]
       .reverse()
       .map((g) => {
-        const w = g.matchResult === "win";
-        return `<span class="${w ? "w" : "l"}">${w ? "W" : "L"}</span>`;
+        const cls = g.matchResult === "win" ? "w" : g.matchResult === "tie" ? "t" : "l";
+        const lbl = g.matchResult === "win" ? "W" : g.matchResult === "tie" ? "T" : "L";
+        return `<span class="${cls}">${lbl}</span>`;
       })
       .join(" ");
     historyHtml = `<div class="wp-history">${letters}</div>`;
@@ -290,7 +291,17 @@ function init() {
   `;
 
   bindControls();
-  renderPreview();
+
+  const params = new URLSearchParams(window.location.search);
+  const idFromUrl = params.get("id");
+  if (idFromUrl) {
+    const steamInput = document.getElementById("steam-id") as HTMLInputElement;
+    steamInput.value = idFromUrl;
+    currentConfig.steamId = idFromUrl;
+    loadPreview();
+  } else {
+    renderPreview();
+  }
 }
 
 init();

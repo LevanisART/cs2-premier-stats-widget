@@ -38,8 +38,9 @@ function render(container: HTMLElement, config: WidgetConfig, data: PremierData)
     const letters = [...recent]
       .reverse()
       .map((g) => {
-        const w = g.matchResult === 'win';
-        return `<span class="${w ? 'w' : 'l'}">${w ? 'W' : 'L'}</span>`;
+        const cls = g.matchResult === 'win' ? 'w' : g.matchResult === 'tie' ? 't' : 'l';
+        const lbl = g.matchResult === 'win' ? 'W' : g.matchResult === 'tie' ? 'T' : 'L';
+        return `<span class="${cls}">${lbl}</span>`;
       })
       .join(' ');
     historyHtml = `<div class="history">${letters}</div>`;
