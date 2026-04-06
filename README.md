@@ -18,7 +18,11 @@ OBS browser source widget that displays your CS2 Premier rating, stats, and rece
 
 ## Requirements
 
-- **Leetify account** with match tracking enabled — create one at [leetify.com](https://leetify.com) and make sure your profile is connected to Steam. Leetify needs to track your matches for the widget to have up-to-date data. The more frequently Leetify syncs, the faster your rating updates on stream.
+- **Leetify account** with match tracking enabled — create one at [leetify.com](https://leetify.com) and make sure your profile is connected to Steam
+- **Matchmaking share code** — required for Leetify to automatically sync your matches. Without it, data updates will be delayed.
+  1. Get your Authentication Code from [Steam](https://help.steampowered.com/en/wizard/HelpWithGameIssue?appid=730&issueid=128)
+  2. Enter it on Leetify's [Data Sources](https://leetify.com/app/data-sources) page under the Matchmaking tab
+  3. Once active, Leetify will pick up your matches shortly after they finish
 - **Steam64 ID** — find yours at [steamid.io](https://steamid.io)
 
 ## Setup
