@@ -35,7 +35,8 @@ function render(container: HTMLElement, config: WidgetConfig, data: PremierData)
   // W/L history as colored letters
   let historyHtml = '';
   if (config.showMatchHistory) {
-    const letters = recent
+    const letters = [...recent]
+      .reverse()
       .map((g) => {
         const w = g.matchResult === 'win';
         return `<span class="${w ? 'w' : 'l'}">${w ? 'W' : 'L'}</span>`;
