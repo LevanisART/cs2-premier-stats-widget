@@ -9,7 +9,7 @@ export function configToParams(config: WidgetConfig): URLSearchParams {
   if (!config.showStats) params.set('stats', '0');
   if (!config.showMatchHistory) params.set('history', '0');
   if (config.matchCount !== 5) params.set('matchCount', String(config.matchCount));
-  if (config.refreshInterval !== 60) params.set('refresh', String(config.refreshInterval));
+  if (config.refreshInterval !== 30) params.set('refresh', String(config.refreshInterval));
   return params;
 }
 
@@ -22,6 +22,6 @@ export function paramsToConfig(params: URLSearchParams): WidgetConfig {
     showStats: params.get('stats') !== '0',
     showMatchHistory: params.get('history') !== '0',
     matchCount: parseInt(params.get('matchCount') ?? '5', 10),
-    refreshInterval: parseInt(params.get('refresh') ?? '60', 10),
+    refreshInterval: parseInt(params.get('refresh') ?? '30', 10),
   };
 }

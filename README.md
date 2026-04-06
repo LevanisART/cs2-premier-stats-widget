@@ -53,9 +53,9 @@ The widget URL supports these parameters:
 | `name`       | `1`     | Show player name             |
 | `change`     | `1`     | Show rating change (+/-)     |
 | `stats`      | `1`     | Show AVG, K/D, Aim           |
-| `history`    | `1`     | Show W/L match history       |
+| `history`    | `1`     | Show W/L/T match history       |
 | `matchCount` | `5`     | Number of recent matches     |
-| `refresh`    | `60`    | Refresh interval in seconds  |
+| `refresh`    | `30`    | Refresh interval in seconds  |
 
 ## Tech Stack
 

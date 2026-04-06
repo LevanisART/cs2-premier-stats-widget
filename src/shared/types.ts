@@ -59,5 +59,5 @@ export const DEFAULT_CONFIG: WidgetConfig = {
   showStats: true,
   showMatchHistory: true,
   matchCount: 5,
-  refreshInterval: 60,
+  refreshInterval: 30,
 };
