@@ -245,9 +245,9 @@ function init() {
           <div class="field">
             <label class="field-label" for="refresh-interval">Refresh interval</label>
             <select id="refresh-interval" class="input">
-              <option value="15">15 seconds</option>
-              <option value="30" selected>30 seconds</option>
-              <option value="60">1 minute</option>
+              <option value="60" selected>1 minute</option>
+              <option value="180">3 minutes</option>
+              <option value="300">5 minutes</option>
             </select>
           </div>
 
