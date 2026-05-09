@@ -1,3 +1,4 @@
+import { trackEvent } from '../shared/analytics';
 import { fetchPremierData, type PremierData } from '../shared/api';
 import { paramsToConfig } from '../shared/config';
 import { formatRating, getRankTier } from '../shared/ranks';
@@ -97,6 +98,8 @@ async function init() {
     renderError(container, 'No Steam ID provided.');
     return;
   }
+
+  trackEvent('widget_loaded', { steamId: config.steamId });
 
   renderLoading(container);
 

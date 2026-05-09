@@ -1,3 +1,4 @@
+import { trackEvent } from "../shared/analytics";
 import { fetchPremierData, type PremierData } from "../shared/api";
 import { configToParams } from "../shared/config";
 import { formatRating, getRankTier } from "../shared/ranks";
@@ -8,6 +9,7 @@ let currentConfig: WidgetConfig = { ...DEFAULT_CONFIG };
 let previewData: PremierData | null = null;
 let previewError: string | null = null;
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+let lastTrackedSteamId: string | null = null;
 
 function getWidgetUrl(): string {
   const params = configToParams(currentConfig);
@@ -112,6 +114,10 @@ async function loadPreview() {
   try {
     previewError = null;
     previewData = await fetchPremierData(currentConfig.steamId);
+    if (currentConfig.steamId !== lastTrackedSteamId) {
+      trackEvent("steam_id_entered", { steamId: currentConfig.steamId });
+      lastTrackedSteamId = currentConfig.steamId;
+    }
   } catch (e) {
     previewError = e instanceof Error ? e.message : "Failed to load";
     previewData = null;
@@ -181,6 +187,7 @@ function bindControls() {
     const urlEl = document.getElementById("generated-url") as HTMLInputElement;
     if (urlEl.value) {
       navigator.clipboard.writeText(urlEl.value);
+      trackEvent("widget_url_copied", { steamId: currentConfig.steamId });
       const btn = document.getElementById("copy-url")!;
       btn.textContent = "Copied!";
       setTimeout(() => (btn.textContent = "Copy"), 1500);
