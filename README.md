@@ -31,10 +31,13 @@ OBS browser source widget that displays your CS2 Premier rating, stats, and rece
 
 ```bash
 npm install
+cp .env.example .env.local   # then paste your Leetify Public API key
 npm run dev
 ```
 
 The customizer runs at `http://localhost:5173/` and the widget at `http://localhost:5173/widget/`.
+
+`VITE_LEETIFY_KEY` is optional locally — without it, requests still work but hit Leetify's stricter unauthenticated rate limits. For the deployed site, set the same name as a **GitHub Actions repository secret** (Settings → Secrets and variables → Actions) so it's injected into the build.
 
 ## Usage
 

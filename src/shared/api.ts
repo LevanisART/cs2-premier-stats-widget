@@ -1,6 +1,7 @@
 import type { LeetifyGame, LeetifyProfile } from './types';
 
 const API_BASE = 'https://api.cs-prod.leetify.com/api/profile/id';
+const LEETIFY_KEY = import.meta.env.VITE_LEETIFY_KEY as string | undefined;
 
 export interface PremierData {
   name: string;
@@ -12,7 +13,9 @@ export interface PremierData {
 }
 
 export async function fetchPremierData(steamId: string): Promise<PremierData> {
-  const res = await fetch(`${API_BASE}/${steamId}`);
+  const headers: Record<string, string> = {};
+  if (LEETIFY_KEY) headers._leetify_key = LEETIFY_KEY;
+  const res = await fetch(`${API_BASE}/${steamId}`, { headers });
   if (!res.ok) throw new Error(`API error: ${res.status}`);
 
   const data: LeetifyProfile = await res.json();

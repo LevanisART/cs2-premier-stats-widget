@@ -23,6 +23,8 @@ jobs:
           node-version: 20
       - run: npm install
       - run: npm run build
+        env:
+          VITE_LEETIFY_KEY: ${{ secrets.VITE_LEETIFY_KEY }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
