@@ -30,6 +30,7 @@ export interface LeetifyProfile {
 }
 
 export interface LeetifyMatch {
+  id: string;
   data_source: string;
   outcome: 'win' | 'loss' | 'tie';
   rank: number | null;
@@ -42,10 +43,29 @@ export interface LeetifyMatch {
   accuracy_enemy_spotted: number;
   accuracy_head: number;
   spray_accuracy: number;
+  // Kills/deaths aren't in the profile payload — they come from the separate
+  // /v2/matches/{id} endpoint and are attached after the fact (see api.ts).
+  // Undefined when that per-match lookup hasn't run or failed.
+  kills?: number;
+  deaths?: number;
 }
 
 // Kept as an alias so widget.ts's existing rendering code doesn't need renaming.
 export type LeetifyGame = LeetifyMatch;
+
+// Shape of an entry from Leetify's match-list endpoint:
+// GET /v3/profile/matches?steam64_id=... returns an array of these. Only the
+// fields the widget needs — each match's full stats block is much larger.
+export interface LeetifyMatchDetails {
+  id: string;
+  stats: LeetifyMatchPlayerStats[];
+}
+
+export interface LeetifyMatchPlayerStats {
+  steam64_id: string;
+  total_kills: number;
+  total_deaths: number;
+}
 
 export interface RankTier {
   min: number;

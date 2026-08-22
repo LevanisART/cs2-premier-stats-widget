@@ -52,12 +52,15 @@ function renderPreview() {
 
   let statsHtml = "";
   if (config.showStats) {
-    const avgRating = recent.reduce((s, g) => s + g.leetify_rating, 0) / recent.length;
-    const ratingPrefix = avgRating > 0 ? "+" : "";
+    const withKd = recent.filter((g) => g.kills != null && g.deaths != null);
+    const totalKills = withKd.reduce((s, g) => s + g.kills!, 0);
+    const totalDeaths = withKd.reduce((s, g) => s + g.deaths!, 0);
+    const avgKills = withKd.length > 0 ? (totalKills / withKd.length).toFixed(1) : "—";
+    const kd = totalDeaths > 0 ? (totalKills / totalDeaths).toFixed(2) : "—";
     statsHtml = `
       <div class="wp-stats">
-        <div class="wp-stat"><span class="wp-stat-val">${data.winratePct.toFixed(0)}%</span><span class="wp-stat-lbl">WIN</span></div>
-        <div class="wp-stat"><span class="wp-stat-val">${ratingPrefix}${avgRating.toFixed(2)}</span><span class="wp-stat-lbl">RATING</span></div>
+        <div class="wp-stat"><span class="wp-stat-val">${avgKills}</span><span class="wp-stat-lbl">AVG</span></div>
+        <div class="wp-stat"><span class="wp-stat-val">${kd}</span><span class="wp-stat-lbl">K/D</span></div>
         <div class="wp-stat"><span class="wp-stat-val">${data.aimRating.toFixed(1)}</span><span class="wp-stat-lbl">AIM</span></div>
       </div>`;
   }

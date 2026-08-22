@@ -20,17 +20,21 @@ function render(container: HTMLElement, config: WidgetConfig, data: PremierData)
     changeHtml = `<span class="change ${cls}">(${prefix}${diff.toFixed(2)})</span>`;
   }
 
-  // Stats from the same N matches. Raw kills/deaths aren't in Leetify's
-  // public API response, so AVG KILLS / K:D are replaced with win rate and
-  // average match rating — both real fields the API actually returns.
+  // Stats from the same N matches. Kills/deaths come from the per-match endpoint
+  // (attached in api.ts), so AVG is average kills and K/D is total kills over
+  // deaths. Matches whose per-match lookup failed are skipped; if none have K/D
+  // data, the values fall back to "—".
   let statsHtml = '';
   if (config.showStats) {
-    const avgRating = recent.reduce((s, g) => s + g.leetify_rating, 0) / recent.length;
-    const ratingPrefix = avgRating > 0 ? '+' : '';
+    const withKd = recent.filter((g) => g.kills != null && g.deaths != null);
+    const totalKills = withKd.reduce((s, g) => s + g.kills!, 0);
+    const totalDeaths = withKd.reduce((s, g) => s + g.deaths!, 0);
+    const avgKills = withKd.length > 0 ? (totalKills / withKd.length).toFixed(1) : '—';
+    const kd = totalDeaths > 0 ? (totalKills / totalDeaths).toFixed(2) : '—';
     statsHtml = `
       <div class="stats">
-        <div class="stat"><span class="stat-val">${data.winratePct.toFixed(0)}%</span><span class="stat-lbl">WIN</span></div>
-        <div class="stat"><span class="stat-val">${ratingPrefix}${avgRating.toFixed(2)}</span><span class="stat-lbl">RATING</span></div>
+        <div class="stat"><span class="stat-val">${avgKills}</span><span class="stat-lbl">AVG</span></div>
+        <div class="stat"><span class="stat-val">${kd}</span><span class="stat-lbl">K/D</span></div>
         <div class="stat"><span class="stat-val">${data.aimRating.toFixed(1)}</span><span class="stat-lbl">AIM</span></div>
       </div>`;
   }
