@@ -44,6 +44,15 @@ That's it. The widget calls `GET {VITE_AVATAR_PROXY_URL}?steam64_id=<id>` and
 renders the returned avatar. The **Steam key stays on Cloudflare** and never
 reaches the browser.
 
+## Allowed origins (CORS)
+
+The Worker only answers browser requests from the site origins listed in
+`ALLOWED_ORIGINS` at the top of `steam-avatar-proxy.js` — that's what stops other
+websites from spending your Steam key / Cloudflare quota. Edit that list (scheme +
+host only, no trailing slash) to match wherever the widget is hosted, e.g.
+`https://<you>.github.io`, plus `http://localhost:5173` for local dev. After
+changing it, redeploy the Worker.
+
 ## Response shape
 
 ```
