@@ -1,34 +1,51 @@
+// Raw shape of Leetify's official Public API response:
+// GET https://api-public.cs-prod.leetify.com/v3/profile?steam64_id={id}
 export interface LeetifyProfile {
-  meta: {
-    name: string;
-    steam64Id: string;
-    steamAvatarUrl: string;
-    faceitNickname: string | null;
+  privacy_mode: string;
+  winrate: number; // fraction, e.g. 0.6429
+  total_matches: number;
+  first_match_date: string;
+  name: string;
+  steam64_id: string;
+  id: string;
+  ranks: {
+    leetify: number;
+    premier: number | null;
+    faceit: number | null;
+    faceit_elo: number | null;
+    wingman: number | null;
+    renown: number | null;
+    competitive: { map_name: string; rank: number }[];
   };
-  games: LeetifyGame[];
-  recentGameRatings: {
+  rating: {
     aim: number;
     positioning: number;
     utility: number;
-    leetify: number;
-    gamesPlayed: number;
-  } | null;
+    clutch: number;
+    opening: number;
+    ct_leetify: number;
+    t_leetify: number;
+  };
+  recent_matches: LeetifyMatch[];
 }
 
-export interface LeetifyGame {
-  gameId: string;
-  mapName: string;
-  matchResult: 'win' | 'loss' | 'tie';
-  scores: [number, number];
-  kills: number;
-  deaths: number;
-  skillLevel: number;
-  rankType: number | null;
-  elo: number | null;
-  dataSource: string;
-  ctLeetifyRating: number;
-  tLeetifyRating: number;
+export interface LeetifyMatch {
+  data_source: string;
+  outcome: 'win' | 'loss' | 'tie';
+  rank: number | null;
+  rank_type: string | null;
+  map_name: string;
+  leetify_rating: number;
+  score: [number, number];
+  preaim: number;
+  reaction_time_ms: number;
+  accuracy_enemy_spotted: number;
+  accuracy_head: number;
+  spray_accuracy: number;
 }
+
+// Kept as an alias so widget.ts's existing rendering code doesn't need renaming.
+export type LeetifyGame = LeetifyMatch;
 
 export interface RankTier {
   min: number;
