@@ -45,6 +45,16 @@ The customizer runs at `http://localhost:5173/` and the widget at `http://localh
 
 `VITE_LEETIFY_KEY` is optional locally — without it, requests still work but hit Leetify's stricter unauthenticated rate limits. For the deployed site, set the same name as a **GitHub Actions repository secret** (Settings → Secrets and variables → Actions) so it's injected into the build.
 
+### Player avatars (optional)
+
+Leetify's public API doesn't return a player avatar, and this static site can't
+call Steam's Web API directly (it needs a secret key and sends no CORS headers).
+To show avatars, deploy the small Cloudflare Worker in [`worker/`](./worker) and
+set `VITE_AVATAR_PROXY_URL` to its URL — full steps in
+[worker/README.md](./worker/README.md). Your Steam API key stays on the Worker
+and never reaches the browser. Skip this and the widget just runs without an
+avatar.
+
 ## Usage
 
 1. Open the customizer
