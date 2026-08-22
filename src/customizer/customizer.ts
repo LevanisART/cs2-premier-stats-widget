@@ -104,24 +104,45 @@ function updateGeneratedUrl() {
   }
 }
 
+function setSteamIdError(msg: string | null) {
+  const el = document.getElementById("steam-id-error")!;
+  if (msg) {
+    el.innerHTML = msg;
+    el.removeAttribute("hidden");
+  } else {
+    el.innerHTML = "";
+    el.setAttribute("hidden", "");
+  }
+}
+
 async function loadPreview() {
   if (!currentConfig.steamId) {
     previewData = null;
     previewError = null;
+    setSteamIdError(null);
     renderPreview();
     return;
   }
 
   try {
     previewError = null;
+    setSteamIdError(null);
     previewData = await fetchPremierData(currentConfig.steamId);
     if (currentConfig.steamId !== lastTrackedSteamId) {
       trackEvent("steam_id_entered", { steamId: currentConfig.steamId });
       lastTrackedSteamId = currentConfig.steamId;
     }
   } catch (e) {
-    previewError = e instanceof Error ? e.message : "Failed to load";
+    const msg = e instanceof Error ? e.message : "Failed to load";
+    previewError = msg;
     previewData = null;
+    if (msg === "Profile not found on Leetify") {
+      setSteamIdError(
+        `No Leetify profile found for this Steam ID.<br>` +
+        `<a href="https://leetify.com" target="_blank" rel="noopener">Create your free Leetify account</a> ` +
+        `and make sure match tracking is enabled.`
+      );
+    }
   }
   renderPreview();
   updateGeneratedUrl();
@@ -228,6 +249,8 @@ function init() {
             <label class="field-label" for="steam-id">Steam ID (Steam64)</label>
             <input type="text" id="steam-id" class="input" placeholder="e.g. 76561198012345678">
             <span class="field-hint">Find your Steam64 ID at steamid.io</span>
+            <span class="field-hint">Your <a href="https://leetify.com" target="_blank" rel="noopener">Leetify</a> profile must be public and have match tracking enabled</span>
+            <div id="steam-id-error" class="field-error" hidden></div>
           </div>
 
           <div class="section">

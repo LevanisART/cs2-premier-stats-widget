@@ -94,6 +94,35 @@ body {
   margin-top: 4px;
 }
 
+.field-hint a {
+  color: #888;
+  text-decoration: underline;
+}
+
+.field-hint a:hover {
+  color: #bbb;
+}
+
+.field-error {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(220, 50, 50, 0.12);
+  border: 1px solid rgba(220, 50, 50, 0.4);
+  color: #ff5555;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.field-error a {
+  color: #ff8888;
+  text-decoration: underline;
+}
+
+.field-error a:hover {
+  color: #ffaaaa;
+}
+
 .input {
   width: 100%;
   background: #111;

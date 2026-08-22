@@ -30,6 +30,7 @@ export async function fetchPremierData(steamId: string): Promise<PremierData> {
   if (LEETIFY_KEY) headers._leetify_key = LEETIFY_KEY;
 
   const res = await fetch(`${API_BASE}?steam64_id=${encodeURIComponent(steamId)}`, { headers });
+  if (res.status === 404) throw new Error('Profile not found on Leetify');
   if (!res.ok) throw new Error(`API error: ${res.status}`);
 
   const data: LeetifyProfile = await res.json();
