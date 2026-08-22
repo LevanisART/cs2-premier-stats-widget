@@ -6,6 +6,12 @@ OBS browser source widget that displays your CS2 Premier rating, stats, and rece
 
 ### [Open Customizer](https://LevanisART.github.io/cs2-premier-stats-widget/)
 
+> [!WARNING]
+> **This project was built with AI assistance (vibe coded).** While it works, the
+> code hasn't been professionally audited — use at your own risk. If you get a
+> chance, feel free to review the code before deploying. PRs and fixes are always
+> welcome!
+
 ## Features
 
 - Live Premier rating with rank-colored display (Gray, Light Blue, Blue, Purple, Pink, Red, Gold)
