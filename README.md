@@ -10,7 +10,7 @@ OBS browser source widget that displays your CS2 Premier rating, stats, and rece
 > **This project was built with AI assistance (vibe coded).** While it works, the
 > code hasn't been professionally audited — use at your own risk. If you get a
 > chance, feel free to review the code before deploying. PRs and fixes are always
-> welcome!
+> welcome. Thank You!
 
 ## Features
 
