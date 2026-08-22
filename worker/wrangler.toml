@@ -1,0 +1,8 @@
+# Cloudflare Worker config for the Steam avatar proxy.
+#
+# Deploy:   wrangler deploy
+# Add key:  wrangler secret put STEAM_API_KEY   (never commit the key)
+
+name = "cs2-steam-avatar-proxy"
+main = "steam-avatar-proxy.js"
+compatibility_date = "2024-11-01"

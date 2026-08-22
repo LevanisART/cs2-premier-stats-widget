@@ -6,6 +6,12 @@ OBS browser source widget that displays your CS2 Premier rating, stats, and rece
 
 ### [Open Customizer](https://LevanisART.github.io/cs2-premier-stats-widget/)
 
+> [!WARNING]
+> **This project was built with AI assistance (vibe coded).** While it works, the
+> code hasn't been professionally audited — use at your own risk. If you get a
+> chance, feel free to review the code before deploying. PRs and fixes are always
+> welcome. Thank You!
+
 ## Features
 
 - Live Premier rating with rank-colored display (Gray, Light Blue, Blue, Purple, Pink, Red, Gold)
@@ -38,6 +44,16 @@ npm run dev
 The customizer runs at `http://localhost:5173/` and the widget at `http://localhost:5173/widget/`.
 
 `VITE_LEETIFY_KEY` is optional locally — without it, requests still work but hit Leetify's stricter unauthenticated rate limits. For the deployed site, set the same name as a **GitHub Actions repository secret** (Settings → Secrets and variables → Actions) so it's injected into the build.
+
+### Player avatars (optional)
+
+Leetify's public API doesn't return a player avatar, and this static site can't
+call Steam's Web API directly (it needs a secret key and sends no CORS headers).
+To show avatars, deploy the small Cloudflare Worker in [`worker/`](./worker) and
+set `VITE_AVATAR_PROXY_URL` to its URL — full steps in
+[worker/README.md](./worker/README.md). Your Steam API key stays on the Worker
+and never reaches the browser. Skip this and the widget just runs without an
+avatar.
 
 ## Usage
 

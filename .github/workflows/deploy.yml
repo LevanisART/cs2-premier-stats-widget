@@ -25,6 +25,10 @@ jobs:
       - run: npm run build
         env:
           VITE_LEETIFY_KEY: ${{ secrets.VITE_LEETIFY_KEY }}
+          # Public URL of the optional Steam avatar proxy Worker (worker/README.md).
+          # Not a secret, so a repository variable is the natural home, but a
+          # secret with the same name works too.
+          VITE_AVATAR_PROXY_URL: ${{ vars.VITE_AVATAR_PROXY_URL || secrets.VITE_AVATAR_PROXY_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
