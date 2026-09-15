@@ -79,7 +79,6 @@ export interface RankTier {
 
 export interface WidgetConfig {
   steamId: string;
-  showAvatar: boolean;
   showName: boolean;
   showChange: boolean;
   showStats: boolean;
@@ -90,7 +89,6 @@ export interface WidgetConfig {
 
 export const DEFAULT_CONFIG: WidgetConfig = {
   steamId: '',
-  showAvatar: true,
   showName: true,
   showChange: true,
   showStats: true,

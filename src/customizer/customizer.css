@@ -253,23 +253,6 @@ select.input {
   gap: 12px;
 }
 
-.wp-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.rank-gray .wp-avatar      { border-color: #9ca3af; }
-.rank-lightblue .wp-avatar  { border-color: #7ec8e3; }
-.rank-blue .wp-avatar      { border-color: #3b82f6; }
-.rank-purple .wp-avatar    { border-color: #a855f7; }
-.rank-pink .wp-avatar      { border-color: #ec4899; }
-.rank-red .wp-avatar       { border-color: #ef4444; }
-.rank-gold .wp-avatar      { border-color: #eab308; }
-
 .wp-identity { flex: 1; min-width: 0; }
 
 .wp-name {

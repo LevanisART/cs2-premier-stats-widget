@@ -18,30 +18,12 @@ body {
   gap: 8px;
 }
 
-/* Top row: avatar | identity | stats */
+/* Top row: identity | stats */
 .top-row {
   display: flex;
   align-items: center;
   gap: 14px;
 }
-
-/* Avatar */
-.avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 2px solid;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.rank-gray .avatar      { border-color: #9ca3af; }
-.rank-lightblue .avatar  { border-color: #7ec8e3; }
-.rank-blue .avatar      { border-color: #3b82f6; }
-.rank-purple .avatar    { border-color: #a855f7; }
-.rank-pink .avatar      { border-color: #ec4899; }
-.rank-red .avatar       { border-color: #ef4444; }
-.rank-gold .avatar      { border-color: #eab308; }
 
 /* Identity: name + rating */
 .identity {

@@ -10,15 +10,8 @@ const API_BASE = 'https://api-public.cs-prod.leetify.com/v3/profile';
 const MATCHES_BASE = 'https://api-public.cs-prod.leetify.com/v3/profile/matches';
 const LEETIFY_KEY = import.meta.env.VITE_LEETIFY_KEY as string | undefined;
 
-// Optional Steam avatar proxy (a small Cloudflare Worker — see worker/README.md).
-// Leetify's public API doesn't return an avatar, and the browser can't call
-// Steam's Web API directly (needs a secret key, no CORS), so when this is set
-// the widget fetches the avatar from the Worker instead.
-const AVATAR_PROXY = import.meta.env.VITE_AVATAR_PROXY_URL as string | undefined;
-
 export interface PremierData {
   name: string;
-  avatarUrl: string;
   rating: number;
   ratingChange: number;
   recentGames: LeetifyGame[];
@@ -38,16 +31,7 @@ export async function fetchPremierData(steamId: string): Promise<PremierData> {
   if (data.ranks.premier == null) throw new Error('No Premier rank found');
 
   const recentGames = data.recent_matches ?? [];
-  // Kills/deaths aren't in the profile payload, so fetch them from the match-list
-  // endpoint (one call) and attach them to these matches. Runs alongside the
-  // avatar lookup so both happen in parallel.
-  const [avatarUrl] = await Promise.all([
-    // Leetify's public API doesn't expose an avatar URL. If an avatar proxy is
-    // configured we resolve it from the Steam Web API; otherwise this stays blank
-    // and config.showAvatar hides the avatar slot entirely.
-    fetchAvatarUrl(steamId),
-    enrichWithKills(steamId, recentGames, headers),
-  ]);
+  await enrichWithKills(steamId, recentGames, headers);
   // The API doesn't return historical Premier point deltas, so "change" is
   // repurposed to the most recent match's performance rating instead of a
   // literal rank-point swing.
@@ -55,7 +39,6 @@ export async function fetchPremierData(steamId: string): Promise<PremierData> {
 
   return {
     name: data.name,
-    avatarUrl,
     rating: data.ranks.premier,
     ratingChange,
     recentGames,
@@ -99,17 +82,3 @@ async function enrichWithKills(
   }
 }
 
-// Resolves a Steam avatar URL via the optional proxy Worker. Never throws:
-// if the proxy is unset, unreachable, or the profile is private, the widget
-// just renders without an avatar rather than failing the whole update.
-async function fetchAvatarUrl(steamId: string): Promise<string> {
-  if (!AVATAR_PROXY) return '';
-  try {
-    const res = await fetch(`${AVATAR_PROXY}?steam64_id=${encodeURIComponent(steamId)}`);
-    if (!res.ok) return '';
-    const body = (await res.json()) as { avatarUrl?: unknown };
-    return typeof body.avatarUrl === 'string' ? body.avatarUrl : '';
-  } catch {
-    return '';
-  }
-}

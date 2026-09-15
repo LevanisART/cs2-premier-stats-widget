@@ -56,7 +56,6 @@ function render(container: HTMLElement, config: WidgetConfig, data: PremierData)
   container.innerHTML = `
     <div class="widget rank-${tier.key}">
       <div class="top-row">
-        ${config.showAvatar && data.avatarUrl ? `<img class="avatar" src="${data.avatarUrl}" alt="">` : ''}
         <div class="identity">
           ${config.showName ? `<div class="name">${data.name}</div>` : ''}
           <div class="rating-line">

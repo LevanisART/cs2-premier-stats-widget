@@ -3,7 +3,6 @@ import { DEFAULT_CONFIG, type WidgetConfig } from './types';
 export function configToParams(config: WidgetConfig): URLSearchParams {
   const params = new URLSearchParams();
   params.set('steamId', config.steamId);
-  if (!config.showAvatar) params.set('avatar', '0');
   if (!config.showName) params.set('name', '0');
   if (!config.showChange) params.set('change', '0');
   if (!config.showStats) params.set('stats', '0');
@@ -16,7 +15,6 @@ export function configToParams(config: WidgetConfig): URLSearchParams {
 export function paramsToConfig(params: URLSearchParams): WidgetConfig {
   return {
     steamId: params.get('steamId') ?? DEFAULT_CONFIG.steamId,
-    showAvatar: params.get('avatar') !== '0',
     showName: params.get('name') !== '0',
     showChange: params.get('change') !== '0',
     showStats: params.get('stats') !== '0',

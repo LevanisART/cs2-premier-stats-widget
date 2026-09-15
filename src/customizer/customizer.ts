@@ -81,7 +81,6 @@ function renderPreview() {
   previewEl.innerHTML = `
     <div class="wp rank-${tier.key}">
       <div class="wp-top">
-        ${config.showAvatar && data.avatarUrl ? `<img class="wp-avatar" src="${data.avatarUrl}" alt="">` : ""}
         <div class="wp-identity">
           ${config.showName ? `<div class="wp-name">${data.name}</div>` : ""}
           <div class="wp-rating-line">
@@ -162,7 +161,6 @@ function bindControls() {
   });
 
   const checkboxMap: Record<string, keyof WidgetConfig> = {
-    "show-avatar": "showAvatar",
     "show-name": "showName",
     "show-change": "showChange",
     "show-stats": "showStats",
@@ -255,7 +253,6 @@ function init() {
 
           <div class="section">
             <h3 class="section-title">Display Options</h3>
-            <label class="checkbox-row"><input type="checkbox" id="show-avatar" checked><span>Show avatar</span></label>
             <label class="checkbox-row"><input type="checkbox" id="show-name" checked><span>Show player name</span></label>
             <label class="checkbox-row"><input type="checkbox" id="show-change" checked><span>Show rating change (+/-)</span></label>
             <label class="checkbox-row"><input type="checkbox" id="show-stats" checked><span>Show stats (AVG kills, K/D)</span></label>
