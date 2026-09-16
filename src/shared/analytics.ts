@@ -1,9 +1,8 @@
 declare global {
   interface Window {
-    plausible?: (
-      event: string,
-      options?: { props?: Record<string, string | number | boolean> },
-    ) => void;
+    umami?: {
+      track: (event: string, data?: Record<string, string | number | boolean>) => void;
+    };
   }
 }
 
@@ -12,7 +11,7 @@ export function trackEvent(
   props?: Record<string, string | number | boolean>,
 ) {
   try {
-    window.plausible?.(event, props ? { props } : undefined);
+    window.umami?.track(event, props);
   } catch {
     // analytics must never break the app
   }
