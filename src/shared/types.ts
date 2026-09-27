@@ -33,8 +33,10 @@ export interface LeetifyMatch {
   id: string;
   data_source: string;
   outcome: 'win' | 'loss' | 'tie';
+  // For Premier matches (rank_type 11), `rank` is the 5-digit CS Rating after the
+  // match. Competitive is rank_type 12, Wingman 7; Faceit matches have rank_type null.
   rank: number | null;
-  rank_type: string | null;
+  rank_type: number | null;
   map_name: string;
   leetify_rating: number;
   score: [number, number];

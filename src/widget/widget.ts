@@ -9,15 +9,14 @@ function render(container: HTMLElement, config: WidgetConfig, data: PremierData)
   const tier = getRankTier(data.rating);
   const recent = data.recentGames.slice(0, config.matchCount);
 
-  // Rating change — Leetify's public API doesn't expose historical Premier
-  // point deltas, so this shows the most recent match's performance rating
-  // (a small decimal, e.g. +1.42 or -0.87) rather than a rank-point swing.
+  // Rating change — the CS Rating swing between the two most recent Premier
+  // matches (e.g. +312 or -204). Hidden when there's no Premier delta to show.
   let changeHtml = '';
-  if (config.showChange) {
+  if (config.showChange && data.ratingChange !== 0) {
     const diff = data.ratingChange;
-    const cls = diff > 0 ? 'positive' : diff < 0 ? 'negative' : 'neutral';
+    const cls = diff > 0 ? 'positive' : 'negative';
     const prefix = diff > 0 ? '+' : '';
-    changeHtml = `<span class="change ${cls}">(${prefix}${diff.toFixed(2)})</span>`;
+    changeHtml = `<span class="change ${cls}">(${prefix}${diff.toLocaleString('en-US')})</span>`;
   }
 
   // Stats from the same N matches. Kills/deaths come from the per-match endpoint

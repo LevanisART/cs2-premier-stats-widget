@@ -123,6 +123,17 @@ body {
   color: #ffaaaa;
 }
 
+.field-info {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(96, 165, 250, 0.4);
+  color: #93c5fd;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .input {
   width: 100%;
   background: #111;

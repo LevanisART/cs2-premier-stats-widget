@@ -43,11 +43,11 @@ function renderPreview() {
   const recent = data.recentGames.slice(0, config.matchCount);
 
   let changeHtml = "";
-  if (config.showChange) {
+  if (config.showChange && data.ratingChange !== 0) {
     const diff = data.ratingChange;
-    const cls = diff > 0 ? "positive" : diff < 0 ? "negative" : "neutral";
+    const cls = diff > 0 ? "positive" : "negative";
     const prefix = diff > 0 ? "+" : "";
-    changeHtml = `<span class="wp-change ${cls}">(${prefix}${diff.toFixed(2)})</span>`;
+    changeHtml = `<span class="wp-change ${cls}">(${prefix}${diff.toLocaleString("en-US")})</span>`;
   }
 
   let statsHtml = "";
@@ -114,11 +114,23 @@ function setSteamIdError(msg: string | null) {
   }
 }
 
+function setSteamIdInfo(msg: string | null) {
+  const el = document.getElementById("steam-id-info")!;
+  if (msg) {
+    el.innerHTML = msg;
+    el.removeAttribute("hidden");
+  } else {
+    el.innerHTML = "";
+    el.setAttribute("hidden", "");
+  }
+}
+
 async function loadPreview() {
   if (!currentConfig.steamId) {
     previewData = null;
     previewError = null;
     setSteamIdError(null);
+    setSteamIdInfo(null);
     renderPreview();
     return;
   }
@@ -126,7 +138,17 @@ async function loadPreview() {
   try {
     previewError = null;
     setSteamIdError(null);
+    setSteamIdInfo(null);
     previewData = await fetchPremierData(currentConfig.steamId);
+    // Profile loaded and has a Premier rating, but no recent Premier matches were
+    // found (player has only been in Competitive/Faceit). Rating still shows;
+    // W/L, stats, and change stay empty until they play a Premier match.
+    if (previewData.recentGames.length === 0) {
+      setSteamIdInfo(
+        `No recent Premier matches found. Your Premier rating shows, but play at ` +
+        `least 1 Premier match to fill in stats, W/L, and rating change.`
+      );
+    }
     if (currentConfig.steamId !== lastTrackedSteamId) {
       trackEvent("steam_id_entered", { steamId: currentConfig.steamId });
       lastTrackedSteamId = currentConfig.steamId;
@@ -249,6 +271,7 @@ function init() {
             <span class="field-hint">Find your Steam64 ID at steamid.io</span>
             <span class="field-hint">Your <a href="https://leetify.com" target="_blank" rel="noopener">Leetify</a> profile must be public and have match tracking enabled</span>
             <div id="steam-id-error" class="field-error" hidden></div>
+            <div id="steam-id-info" class="field-info" hidden></div>
           </div>
 
           <div class="section">

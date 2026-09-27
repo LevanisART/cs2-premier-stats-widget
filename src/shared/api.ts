@@ -10,6 +10,10 @@ const API_BASE = 'https://api-public.cs-prod.leetify.com/v3/profile';
 const MATCHES_BASE = 'https://api-public.cs-prod.leetify.com/v3/profile/matches';
 const LEETIFY_KEY = import.meta.env.VITE_LEETIFY_KEY as string | undefined;
 
+// rank_type that marks a Premier match in recent_matches. Competitive is 12,
+// Wingman is 7, Faceit is null. For Premier matches, `rank` holds the CS Rating.
+const PREMIER_RANK_TYPE = 11;
+
 export interface PremierData {
   name: string;
   rating: number;
@@ -30,18 +34,26 @@ export async function fetchPremierData(steamId: string): Promise<PremierData> {
 
   if (data.ranks.premier == null) throw new Error('No Premier rank found');
 
-  const recentGames = data.recent_matches ?? [];
-  await enrichWithKills(steamId, recentGames, headers);
-  // The API doesn't return historical Premier point deltas, so "change" is
-  // repurposed to the most recent match's performance rating instead of a
-  // literal rank-point swing.
-  const ratingChange = recentGames.length > 0 ? recentGames[0].leetify_rating : 0;
+  // This is a Premier widget: rating, change, W/L, and stats all reflect Premier
+  // matches only. recent_matches mixes modes (Competitive/Wingman/Faceit), so we
+  // filter to Premier (rank_type 11) up front. During a non-Premier session this
+  // list may be empty — that's expected and the widget degrades gracefully.
+  const premierGames = (data.recent_matches ?? []).filter(
+    (m) => m.rank_type === PREMIER_RANK_TYPE,
+  );
+  await enrichWithKills(steamId, premierGames, headers);
+  // Premier point change: for Premier matches `rank` is the CS Rating after that
+  // match, so the change is the diff between the two most recent. If there aren't
+  // two Premier matches in recent history (e.g. only Competitive lately), this
+  // stays 0 and the widget hides the change rather than showing a bogus number.
+  const ranked = premierGames.filter((m) => typeof m.rank === 'number');
+  const ratingChange = ranked.length >= 2 ? ranked[0].rank! - ranked[1].rank! : 0;
 
   return {
     name: data.name,
     rating: data.ranks.premier,
     ratingChange,
-    recentGames,
+    recentGames: premierGames,
     aimRating: data.rating.aim,
   };
 }
