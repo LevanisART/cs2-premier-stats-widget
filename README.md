@@ -1,70 +1,94 @@
-# CS2 Premier Widget
+# CS2 Premier and Faceit Stats Widget
 
-OBS browser source widget that displays your CS2 Premier rating, stats, and recent match history. Data is fetched from the Leetify API.
+Live **CS2 Premier + Faceit** stats overlay for streamers. Enter your Steam ID or
+Faceit nickname, pick a design, and drop the URL into OBS, Streamlabs, or any
+browser source. Your rank, stats, and recent form update on stream automatically.
 
-[![Widget Preview](https://i.ibb.co/YnT75YC/badge-preview-anubis.png)](https://LevanisART.github.io/cs2-premier-stats-widget/)
+![CS2 Stats Widget preview](https://i.ibb.co/d0W2MZSH/cs2-stats-widget.png)
 
-### [Open Customizer](https://LevanisART.github.io/cs2-premier-stats-widget/)
+> ⚠️ **For Premier, a free [Leetify](https://leetify.com) account is required.**
+> Sign up, make your profile **public**, and
+> **[connect Matchmaking](https://leetify.com/app/data-sources)** with your
+> **[authentication code](https://help.steampowered.com/en/wizard/HelpWithGameIssue/?appid=730&issueid=128)** -
+> otherwise your Premier rank and stats won't load. (Faceit works on its own, no
+> Leetify account needed.)
+
+**Live:** [cs2livestats.com](https://cs2livestats.com)
+
+---
 
 ## Features
 
-- Live Premier rating with rank-colored display (Gray, Light Blue, Blue, Purple, Pink, Red, Gold)
-- Rating change from last match
-- Stats: AVG kills, K/D ratio, Aim rating
-- Recent match history (W/L)
-- Customizer UI to configure and generate widget URLs
-- Auto-refresh on configurable interval
-- Transparent background — works on any stream layout
+### Ranks (free)
+- **Premier + Faceit together** in one widget - show both, or hide either.
+- **Premier**: CS Rating, rating change (+/-), and an `UNRANKED` state before
+  your rating unlocks. Tier-colored (gray to gold, red at 25k+).
+- **Faceit**: official skill-level icon + ELO, colored by level (1-10).
+- **Steam ID *or* Faceit nickname** - enter a nickname and we auto-pull the
+  Premier rating from the linked Steam account.
 
-## Requirements
+### Stats & history (free)
+- **Stats row**, averaged over your last *N* matches (3 / 5 / 8 / 10):
+  - Premier: **AVG kills · K/D · AIM**
+  - Faceit: **K/D · Win % · HS %**
+- **Match history** - recent W/L/T as colored letters.
+- **Avatar** (Steam or Faceit) and **player name** (Steam name, or switch to your
+  Faceit username).
+- **Auto-refresh** (1 / 3 / 5 min) and a transparent background for OBS.
 
-- **Leetify account** with match tracking enabled — create one at [leetify.com](https://leetify.com) and make sure your profile is connected to Steam
-- **Matchmaking share code** — required for Leetify to automatically sync your matches. Without it, data updates will be delayed.
-  1. Get your Authentication Code from [Steam](https://help.steampowered.com/en/wizard/HelpWithGameIssue?appid=730&issueid=128)
-  2. Enter it on Leetify's [Data Sources](https://leetify.com/app/data-sources) page under the Matchmaking tab
-  3. Once active, Leetify will pick up your matches shortly after they finish
-- **Steam64 ID** — find yours at [steamid.io](https://steamid.io)
+### Pro features - `PRO`
+- **Cheaters faced today** - a best-effort flag of suspicious **Premier /
+  Competitive** opponents you faced today (optionally lists their names). Not a
+  confirmed ban count; not available for Faceit matches.
+- **Map cover** - a circular version of the widget sized to sit over your in-game
+  radar/minimap and hide it from stream snipers.
+- **Today's session** - net rating gained/lost and your W/L for today.
 
-## Setup
+### Designs - `PRO`
+8 themes. **Default** is free; the rest are Pro:
+| Theme | Look |
+| --- | --- |
+| **Default** | Clean dark card (free) |
+| **Neon** | Glowing border + text, tinted to your rank color |
+| **Glass** | Frosted translucent panel |
+| **Gradient** | Rank-colored diagonal gradient |
+| **Terminal** | Monospace green-on-black |
+| **Compact** | Condensed layout |
+| **Minimal** | Text only, no box (shadowed for legibility) |
+| **Stacked** | Vertical, centered badge |
 
-### Development
+### Quick presets
+One click sets what shows (no fiddling with checkboxes):
+**Everything · Ranks only · Ranks + stats · Vertical · Map cover**
 
-```bash
-npm install
-cp .env.example .env.local   # then paste your Leetify Public API key
-npm run dev
-```
+### Works everywhere
+OBS, Streamlabs, Twitch Studio, XSplit - anything with a browser source. No
+install, no download. Just paste a URL.
 
-The customizer runs at `http://localhost:5173/` and the widget at `http://localhost:5173/widget/`.
+---
 
-`VITE_LEETIFY_KEY` is optional locally — without it, requests still work but hit Leetify's stricter unauthenticated rate limits. For the deployed site, set the same name as a **GitHub Actions repository secret** (Settings → Secrets and variables → Actions) so it's injected into the build.
+## How to use
 
-## Usage
+1. Go to **[cs2livestats.com](https://cs2livestats.com)**.
+2. Enter your **Steam ID** (steamid.io) or **Faceit nickname**, pick a design, and
+   choose what to show (live preview).
+3. Copy the generated URL into OBS/Streamlabs as a **Browser Source**. Done.
 
-1. Open the customizer
-2. Enter your Steam64 ID
-3. Toggle display options (name, rating change, stats, match history)
-4. Set the number of recent matches and refresh interval
-5. Copy the generated widget URL
-6. In OBS, add a **Browser Source** and paste the URL
-7. Set width to **520** and height to **120** (adjust as needed)
+---
 
-## Query Parameters
+## Pricing
 
-The widget URL supports these parameters:
+- **Free** - ranks, stats, match history, the Default design.
+- **Pro - $10 one-time** (not a subscription): all premium designs, cheaters
+  faced today, map cover, today's session. Sign in with Steam and purchase once;
+  it unlocks **forever on your Steam account**.
 
-| Parameter    | Default | Description                  |
-| ------------ | ------- | ---------------------------- |
-| `steamId`    | —       | Steam64 ID (required)        |
-| `name`       | `1`     | Show player name             |
-| `change`     | `1`     | Show rating change (+/-)     |
-| `stats`      | `1`     | Show AVG, K/D, Aim           |
-| `history`    | `1`     | Show W/L/T match history       |
-| `matchCount` | `5`     | Number of recent matches     |
-| `refresh`    | `30`    | Refresh interval in seconds  |
+---
 
-## Tech Stack
+## Data & credits
 
-- TypeScript
-- Vite (multi-page build)
-- Leetify public API
+- **Premier** data from [Leetify](https://leetify.com) (public API).
+- **Faceit** data from the official [Faceit](https://faceit.com) Data API.
+- Sign in with **Steam** (OpenID) to purchase/manage Pro.
+
+---
