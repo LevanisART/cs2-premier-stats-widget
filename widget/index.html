@@ -3,12 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CS2 Premier Widget</title>
-  <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "30b9c0bbed57465487d2d4c6bc9a912a"}'></script><!-- End Cloudflare Web Analytics -->
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="4953ef1a-3375-4cce-8536-3b82babf6e6f"></script>
+  <title>CS2 Stats Widget</title>
+  <!--
+    The widget now lives at cs2livestats.com. This page just forwards there,
+    preserving the full query string (steamId, theme, etc.), so existing OBS /
+    Streamlabs browser sources that still point at this old URL keep working and
+    automatically show the current widget - no OBS changes needed.
+  -->
+  <script>
+    location.replace('https://cs2livestats.com/widget/' + location.search + location.hash);
+  </script>
+  <meta http-equiv="refresh" content="0;url=https://cs2livestats.com/widget/">
 </head>
-<body>
-  <div id="app"></div>
-  <script type="module" src="/src/widget/widget.ts"></script>
+<body style="margin:0;background:#111;color:#cbd5e1;font-family:sans-serif">
+  <p style="padding:16px">Moved to <a id="go" href="https://cs2livestats.com/widget/" style="color:#8ab4ff">cs2livestats.com</a></p>
+  <script>var g=document.getElementById('go');if(g)g.href='https://cs2livestats.com/widget/'+location.search+location.hash;</script>
 </body>
 </html>
