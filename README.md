@@ -4,7 +4,7 @@ Live **CS2 Premier + Faceit** stats overlay for streamers. Enter your Steam ID o
 Faceit nickname, pick a design, and drop the URL into OBS, Streamlabs, or any
 browser source. Your rank, stats, and recent form update on stream automatically.
 
-![CS2 Stats Widget preview](https://i.ibb.co/d0W2MZSH/cs2-stats-widget.png)
+![CS2 Stats Widget preview](https://i.ibb.co/0RD8GqBy/cs2-stats-widget-1.png)
 
 > ⚠️ **For Premier, a free [Leetify](https://leetify.com) account is required.**
 > Sign up, make your profile **public**, and
